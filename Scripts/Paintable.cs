@@ -6,22 +6,33 @@ namespace PaintSystem
     {
         private const int PAINT_TEXTURE_SIZE = 4096;
 
-        public RenderTexture Mask { get; private set; }
+        private RenderTexture _mask;
+        public RenderTexture Mask
+        {
+            get => _mask;
+            
+            set
+            {
+                _mask = value;
+                Renderer.material.SetTexture(s_maskTextureID, _mask);
+            }
+        }
+        
         public RenderTexture Support { get; private set; }
         public Renderer Renderer { get; private set; }
 
         private static readonly int s_maskTextureID = Shader.PropertyToID("_Mask");
 
-        private void Start()
+        private void Awake()
         {
-            Mask = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
-            Mask.filterMode = FilterMode.Bilinear;
-
             Support = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
             Support.filterMode = FilterMode.Bilinear;
 
+            _mask = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            _mask.filterMode = FilterMode.Bilinear;
+
             Renderer = GetComponent<Renderer>();
-            Renderer.material.SetTexture(s_maskTextureID, Mask);
+            Renderer.material.SetTexture(s_maskTextureID, _mask);
         }
 
         private void OnDisable()

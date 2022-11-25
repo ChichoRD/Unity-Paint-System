@@ -24,12 +24,22 @@ namespace PaintSystem
             _paintMaterial = new Material(Shader.Find("Hidden/Paint Effect"));
         }
 
-        public void Paint(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings) => Paint(paintable, position, paintSettings.Radius, paintSettings.Hardness, paintSettings.Strength, paintSettings.Color);
-
-        public void Paint(Paintable paintable, Vector3 position, float radius = 1f, float hardness = .5f, float strength = .5f, Color color = default)
+        public void Paint(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings)
         {
-            RenderTexture support = paintable.Support;
-            RenderTexture mask = paintable.Mask;
+            Color c = Color.white * paintSettings.PaintColor;
+            Paint(paintable, paintable.ColorMask, paintable.ColorSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c);
+
+            c = Color.white * paintSettings.PaintMetallic;
+            c.a = 1;
+            Paint(paintable, paintable.MetallicMask, paintable.MetallicSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c);
+
+            c = Color.white * paintSettings.PaintSmoothness;
+            c.a = 1;
+            Paint(paintable, paintable.SmoothnessMask, paintable.SmoothnessSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c);
+        }
+
+        private void Paint(Paintable paintable, RenderTexture mask, RenderTexture support, Vector3 position, float radius = 1f, float hardness = .5f, float strength = .5f, Color color = default)
+        {
             Renderer renderer = paintable.Renderer;
 
             _paintMaterial.SetVector(s_painterPositionID, position);
@@ -40,18 +50,17 @@ namespace PaintSystem
             _paintMaterial.SetTexture(s_textureID, support);
 
             _cmd = CommandBufferPool.Get();
-        
+
             {
                 _cmd.SetRenderTarget(mask);
                 _cmd.DrawRenderer(renderer, _paintMaterial, 0, 0);
-
                 _cmd.SetRenderTarget(support);
                 _cmd.Blit(mask, support);
 
                 Graphics.ExecuteCommandBuffer(_cmd);
                 _cmd.Clear();
             }
-        
+
             CommandBufferPool.Release(_cmd);
         }
     }

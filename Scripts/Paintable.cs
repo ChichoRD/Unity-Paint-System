@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
+using ShadowResolution = UnityEngine.Rendering.Universal.ShadowResolution;
 
 namespace PaintSystem
 {
     public class Paintable : MonoBehaviour
     {
-        private const int PAINT_TEXTURE_SIZE = 4096;
+        [SerializeField] private ShadowResolution _paintTextureResolution = ShadowResolution._256;
 
         private RenderTexture _colorMask;
         public RenderTexture ColorMask
@@ -56,22 +58,23 @@ namespace PaintSystem
 
         private void Awake()
         {
-            ColorSupport = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            int resolution = (int)_paintTextureResolution;
+            ColorSupport = new RenderTexture(resolution, resolution, 0);
             ColorSupport.filterMode = FilterMode.Bilinear;
             
-            MetallicSupport = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            MetallicSupport = new RenderTexture(resolution, resolution, 0);
             MetallicSupport.filterMode = FilterMode.Bilinear;
             
-            SmoothnessSupport = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            SmoothnessSupport = new RenderTexture(resolution, resolution, 0);
             SmoothnessSupport.filterMode = FilterMode.Bilinear;
 
-            _colorMask = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            _colorMask = new RenderTexture(resolution, resolution, 0);
             _colorMask.filterMode = FilterMode.Bilinear;
 
-            _metallicMask = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            _metallicMask = new RenderTexture(resolution, resolution, 0);
             _metallicMask.filterMode = FilterMode.Bilinear;
 
-            _smoothnessMask = new RenderTexture(PAINT_TEXTURE_SIZE, PAINT_TEXTURE_SIZE, 0);
+            _smoothnessMask = new RenderTexture(resolution, resolution, 0);
             _smoothnessMask.filterMode = FilterMode.Bilinear;
 
             Renderer = GetComponent<Renderer>();
@@ -89,6 +92,18 @@ namespace PaintSystem
             ColorSupport.Release();
             MetallicSupport.Release();
             SmoothnessSupport.Release();
+        }
+
+        [Serializable]
+        private enum TextureSize
+        {
+            _256 = 256,
+            _512 = 512,
+            _1024 = 1024,
+            _2048 = 2048,
+            _4096 = 4096,
+            _8192 = 8192,
+            _16384 = 16384
         }
     }
 }

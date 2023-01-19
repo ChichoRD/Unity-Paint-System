@@ -56,9 +56,15 @@ Shader "Hidden/Paint Effect"
 			return o;
         }
 
+		float taxicarDistance(float3 a, float3 b)
+		{
+			return abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z);
+		}
+
 		float Mask(float3 position, float3 center, float radius, float hardness)
 		{
 			float m = distance(position, center);
+			//m = taxicarDistance(position, center);
 			return 1 - smoothstep(radius * hardness, radius, m);
 		}
 		

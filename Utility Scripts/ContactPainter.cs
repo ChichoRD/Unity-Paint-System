@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class ContactPainter : LayerPainter
 {
-    [SerializeField] private PaintSettingsObject _paintSettingsObject;
+    private const int REDUCED_MAX_CONTACTS = 1;
+    private const int DEFAULT_MAX_CONTACTS = 5;
+    private const int AUGMENTED_MAX_CONTACTS = 10;
+
+    [SerializeField] private PaintSettingsCollectionObject _paintSettingsCollectionObject;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -12,14 +16,18 @@ public class ContactPainter : LayerPainter
         Paintable paintable = collision.gameObject.GetComponentInChildren<Paintable>();
         if (paintable == null) return;
 
-        const int MAX_CONTACTS = 10;
+        //Vector3 contact = collision.contacts[0].point;
+        //paintManagerObject.Paint(paintable, contact, _paintSettingsCollectionObject);
+
+        //TODO - Introduce tiny cooldown to prevent multiple paint calls per frame
+        const int MAX_CONTACTS = REDUCED_MAX_CONTACTS;
         var contacts = new ContactPoint[MAX_CONTACTS];
         var count = collision.GetContacts(contacts);
 
         for (var i = 0; i < count; i++)
         {
             var contact = contacts[i];
-            paintManagerObject.Paint(paintable, contact.point, _paintSettingsObject);
+            paintManagerObject.Paint(paintable, contact.point, _paintSettingsCollectionObject);
         }
     }
 }

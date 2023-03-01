@@ -11,5 +11,9 @@ namespace PaintSystem
         [field: SerializeField] public Color PaintColor { get; private set; } = Color.white;
         [field: SerializeField][field: Range(0f, 1f)] public float PaintMetallic { get; private set; } = 0.5f;
         [field: SerializeField][field: Range(0f, 1f)] public float PaintSmoothness { get; private set; } = 0.5f;
+        [field: SerializeField] public Texture2D PaintTexture { get; private set; } = null;
+        [field: SerializeField] public Vector3 PaintTextureRotation { get; private set; } = Vector3.zero;
+        [field: SerializeField] public Vector2 PaintTextureScale { get; private set; } = Vector2.one;
+        [field: SerializeField] public Vector2 PaintTextureOffset { get; private set; } = Vector2.zero;
     }
 }

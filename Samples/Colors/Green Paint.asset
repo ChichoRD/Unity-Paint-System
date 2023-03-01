@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb656b0a94d34145882f5e621482dcd, type: 3}
   m_Name: Green Paint
   m_EditorClassIdentifier: 
-  <Radius>k__BackingField: 4.5
-  <Hardness>k__BackingField: 0
-  <Strength>k__BackingField: 0.25
-  <Color>k__BackingField: {r: 0.26295832, g: 0.745283, b: 0.49798948, a: 1}
+  <BrushRadius>k__BackingField: 2
+  <BrushHardness>k__BackingField: 0.5
+  <BrushStrength>k__BackingField: 0.5
+  <PaintColor>k__BackingField: {r: 0.17248127, g: 0.8962264, b: 0.42082277, a: 1}
+  <PaintMetallic>k__BackingField: 0.5
+  <PaintSmoothness>k__BackingField: 0.5
+  <PaintTexture>k__BackingField: {fileID: 0}
+  <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
+  <PaintTextureScale>k__BackingField: {x: 1, y: 1}
+  <PaintTextureOffset>k__BackingField: {x: 0, y: 0}

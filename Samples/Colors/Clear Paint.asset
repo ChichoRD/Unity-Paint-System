@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb656b0a94d34145882f5e621482dcd, type: 3}
   m_Name: Clear Paint
   m_EditorClassIdentifier: 
-  <Radius>k__BackingField: 2.25
-  <Hardness>k__BackingField: 0
-  <Strength>k__BackingField: 0.25
-  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
+  <BrushRadius>k__BackingField: 2
+  <BrushHardness>k__BackingField: 0.5
+  <BrushStrength>k__BackingField: 0.85
+  <PaintColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0}
+  <PaintMetallic>k__BackingField: 0.5
+  <PaintSmoothness>k__BackingField: 0.5
+  <PaintTexture>k__BackingField: {fileID: 0}
+  <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
+  <PaintTextureScale>k__BackingField: {x: 1, y: 1}
+  <PaintTextureOffset>k__BackingField: {x: 0, y: 0}

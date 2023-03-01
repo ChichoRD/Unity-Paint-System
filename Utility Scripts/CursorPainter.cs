@@ -3,7 +3,7 @@ using PaintSystem;
 
 public class CursorPainter : LayerPainter
 {
-    [SerializeField] private PaintSettingsObject _paintSettingsObject;
+    [SerializeField] private PaintSettingsCollectionObject _paintSettingsCollectionObject;
     [field: SerializeField] public Camera Camera { get; set; }
 
     public bool TryPaintAtScreenPosition(Vector2 position, out Paintable paintable)
@@ -17,7 +17,7 @@ public class CursorPainter : LayerPainter
         paintable = hit.collider.transform.root.gameObject.GetComponentInChildren<Paintable>();
         if (paintable == null) return false;
         
-        paintManagerObject.Paint(paintable, hit.point, _paintSettingsObject);
+        paintManagerObject.Paint(paintable, hit.point, _paintSettingsCollectionObject);
         return true;
     }
 }

@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb656b0a94d34145882f5e621482dcd, type: 3}
   m_Name: Blue Paint
   m_EditorClassIdentifier: 
-  <Radius>k__BackingField: 5
-  <Hardness>k__BackingField: 0
-  <Strength>k__BackingField: 0.25
-  <Color>k__BackingField: {r: 0.35686275, g: 0.23137257, b: 0.9960785, a: 1}
+  <BrushRadius>k__BackingField: 2
+  <BrushHardness>k__BackingField: 1
+  <BrushStrength>k__BackingField: 0.2
+  <PaintColor>k__BackingField: {r: 0.07864004, g: 0.36821893, b: 0.8867924, a: 1}
+  <PaintMetallic>k__BackingField: 0.5
+  <PaintSmoothness>k__BackingField: 0.5
+  <PaintTexture>k__BackingField: {fileID: 2800000, guid: 741753be72cedb9459168cd2064e9306,
+    type: 3}
+  <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
+  <PaintTextureScale>k__BackingField: {x: 0.5, y: 0.5}
+  <PaintTextureOffset>k__BackingField: {x: -0.75, y: -0.75}

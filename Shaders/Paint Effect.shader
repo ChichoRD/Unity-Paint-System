@@ -16,6 +16,7 @@ Shader "Hidden/Paint Effect"
 		
 		#pragma vertex vert
         #pragma fragment frag
+		#pragma multi_compile_local_fragment _ ALPHA_TO_RED
 
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
@@ -62,7 +63,8 @@ Shader "Hidden/Paint Effect"
 			
 			o.vertex = uv;
 
-			o.normal = mul(unity_WorldToObject, v.normal);
+			float3 normal = mul(v.normal, (float3x3)unity_WorldToObject);
+			o.normal = normalize(normal);
 			return o;
         }
 
@@ -109,7 +111,11 @@ Shader "Hidden/Paint Effect"
 				float m = Mask(i.worldPosition.xyz, _PainterPosition, _Radius, _Hardness);
 				float edge = m * _Strength;
 				
+				#if ALPHA_TO_RED
 				return lerp(t, _PainterColor, edge);
+				#else
+				return lerp(t, _PainterColor, edge);
+				#endif
 			}
 			
 			ENDHLSL
@@ -158,8 +164,12 @@ Shader "Hidden/Paint Effect"
 
 				float m = Mask(i.worldPosition.xyz, _PainterPosition, _Radius, _Hardness);
 				float edge = m * _Strength;
-								
+				
+				#if ALPHA_TO_RED
+				return lerp(t, _PainterColor, edge * p.aaaa);
+				#else
 				return lerp(t, _PainterColor, edge * p);
+				#endif
 			}
 			
 			ENDHLSL

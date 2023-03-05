@@ -59,22 +59,23 @@ namespace PaintSystem
         private void Awake()
         {
             int resolution = (int)_paintTextureResolution;
-            ColorSupport = new RenderTexture(resolution, resolution, 0);
+            RenderTextureDescriptor colorDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.ARGB32);
+            RenderTextureDescriptor metallicDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.R8);
+            RenderTextureDescriptor smoothnessDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.R8);
+
+            ColorSupport = new RenderTexture(colorDescriptor);
             ColorSupport.filterMode = FilterMode.Bilinear;
-            
-            MetallicSupport = new RenderTexture(resolution, resolution, 0);
-            MetallicSupport.filterMode = FilterMode.Bilinear;
-            
-            SmoothnessSupport = new RenderTexture(resolution, resolution, 0);
-            SmoothnessSupport.filterMode = FilterMode.Bilinear;
-
-            _colorMask = new RenderTexture(resolution, resolution, 0);
+            _colorMask = new RenderTexture(colorDescriptor);
             _colorMask.filterMode = FilterMode.Bilinear;
-
-            _metallicMask = new RenderTexture(resolution, resolution, 0);
+            
+            MetallicSupport = new RenderTexture(metallicDescriptor);
+            MetallicSupport.filterMode = FilterMode.Bilinear;
+            _metallicMask = new RenderTexture(metallicDescriptor);
             _metallicMask.filterMode = FilterMode.Bilinear;
-
-            _smoothnessMask = new RenderTexture(resolution, resolution, 0);
+            
+            SmoothnessSupport = new RenderTexture(smoothnessDescriptor);
+            SmoothnessSupport.filterMode = FilterMode.Bilinear;
+            _smoothnessMask = new RenderTexture(smoothnessDescriptor);
             _smoothnessMask.filterMode = FilterMode.Bilinear;
 
             Renderer = GetComponent<Renderer>();

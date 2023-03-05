@@ -22,11 +22,48 @@ namespace PaintSystem
         private static readonly int s_paintTextureScaleID = Shader.PropertyToID("_PaintTexScale");
         private static readonly int s_paintTextureOffsetID = Shader.PropertyToID("_PaintTexOffset");
 
+        private static LocalKeyword s_alphaToRedID;
+
         public void Initialize()
         {
             if (Initialized) return;
-        
-            _paintMaterial = new Material(Shader.Find("Hidden/Paint Effect"));
+
+            Shader paintEffectShader = Shader.Find("Hidden/Paint Effect");
+            _paintMaterial = new Material(paintEffectShader);
+
+            s_alphaToRedID = new LocalKeyword(paintEffectShader, "ALPHA_TO_RED");
+        }
+
+        private void PaintAllParameters(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings, Vector3 paintRotation, Texture2D paintTexture)
+        {
+            Color c = Color.white * paintSettings.PaintColor;
+            PaintAlbedo(paintable, position, paintSettings, paintRotation, paintTexture, c);
+
+            c = Color.white * paintSettings.PaintMetallic;
+            c.a = 1;
+            PaintMetallic(paintable, position, paintSettings, paintRotation, paintTexture, c);
+
+            c = Color.white * paintSettings.PaintSmoothness;
+            c.a = 1;
+            PaintSmoothness(paintable, position, paintSettings, paintRotation, paintTexture, c);
+        }
+
+        private void PaintSmoothness(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings, Vector3 paintRotation, Texture2D paintTexture, Color c)
+        {
+            _paintMaterial.SetKeyword(s_alphaToRedID, true);
+            Paint(paintable, paintable.SmoothnessMask, paintable.SmoothnessSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
+        }
+
+        private void PaintMetallic(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings, Vector3 paintRotation, Texture2D paintTexture, Color c)
+        {
+            _paintMaterial.SetKeyword(s_alphaToRedID, true);
+            Paint(paintable, paintable.MetallicMask, paintable.MetallicSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
+        }
+
+        private void PaintAlbedo(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings, Vector3 paintRotation, Texture2D paintTexture, Color c)
+        {
+            _paintMaterial.SetKeyword(s_alphaToRedID, false);
+            Paint(paintable, paintable.ColorMask, paintable.ColorSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
         }
 
         public void Paint(Paintable paintable, Vector3 position, PaintSettingsCollectionObject paintSettingsCollection)
@@ -35,31 +72,12 @@ namespace PaintSystem
             Vector3 paintRotation = paintSettingsCollection.UseRandomRotation ? paintSettingsCollection.GetRandomRotation() : paintSettings.PaintTextureRotation;
             Texture2D paintTexture = paintSettingsCollection.UseRandomTexture ? paintSettingsCollection.GetRandomTextureFromSettings() : paintSettings.PaintTexture;
 
-            Color c = Color.white * paintSettings.PaintColor;
-            Paint(paintable, paintable.ColorMask, paintable.ColorSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
-
-            c = Color.white * paintSettings.PaintMetallic;
-            c.a = 1;
-            Paint(paintable, paintable.MetallicMask, paintable.MetallicSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
-
-            c = Color.white * paintSettings.PaintSmoothness;
-            c.a = 1;
-            Paint(paintable, paintable.SmoothnessMask, paintable.SmoothnessSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintTexture, paintRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
-            Debug.Log("painted");
+            PaintAllParameters(paintable, position, paintSettings, paintRotation, paintTexture);
         }
 
         public void Paint(Paintable paintable, Vector3 position, PaintSettingsObject paintSettings)
         {
-            Color c = Color.white * paintSettings.PaintColor;
-            Paint(paintable, paintable.ColorMask, paintable.ColorSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintSettings.PaintTexture, paintSettings.PaintTextureRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
-
-            c = Color.white * paintSettings.PaintMetallic;
-            c.a = 1;
-            Paint(paintable, paintable.MetallicMask, paintable.MetallicSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintSettings.PaintTexture, paintSettings.PaintTextureRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
-
-            c = Color.white * paintSettings.PaintSmoothness;
-            c.a = 1;
-            Paint(paintable, paintable.SmoothnessMask, paintable.SmoothnessSupport, position, paintSettings.BrushRadius, paintSettings.BrushHardness, paintSettings.BrushStrength, c, paintSettings.PaintTexture, paintSettings.PaintTextureRotation, paintSettings.PaintTextureScale, paintSettings.PaintTextureOffset);
+            PaintAllParameters(paintable, position, paintSettings, paintSettings.PaintTextureRotation, paintSettings.PaintTexture);
         }
 
         private void Paint(Paintable paintable, RenderTexture mask, RenderTexture support, Vector3 position, float radius = 1f, float hardness = .5f, float strength = .5f, Color color = default, Texture2D paintTexture = null, Vector3 paintTextureRotation = default, Vector2 paintTextureScale = default, Vector2 paintTextureOffset = default)

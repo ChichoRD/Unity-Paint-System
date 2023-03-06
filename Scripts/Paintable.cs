@@ -7,6 +7,7 @@ namespace PaintSystem
     public class Paintable : MonoBehaviour
     {
         [SerializeField] private ShadowResolution _paintTextureResolution = ShadowResolution._256;
+        private Texture2D _paintReadtexture;
 
         private RenderTexture _colorMask;
         public RenderTexture ColorMask
@@ -59,6 +60,8 @@ namespace PaintSystem
         private void Awake()
         {
             int resolution = (int)_paintTextureResolution;
+            _paintReadtexture = new Texture2D(1, 1, TextureFormat.ARGB32, false, true);
+
             RenderTextureDescriptor colorDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.ARGB32);
             RenderTextureDescriptor metallicDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.R8);
             RenderTextureDescriptor smoothnessDescriptor = new RenderTextureDescriptor(resolution, resolution, RenderTextureFormat.R8);
@@ -93,6 +96,25 @@ namespace PaintSystem
             ColorSupport.Release();
             MetallicSupport.Release();
             SmoothnessSupport.Release();
+        }
+
+        public Color32 GetColorAt(Vector2 uv)
+        {
+            RenderTexture.active = _colorMask;
+
+            Rect rect = new Rect(Mathf.FloorToInt(uv.x * _colorMask.width), Mathf.FloorToInt(uv.y * _colorMask.height), 1, 1);
+            _paintReadtexture.ReadPixels(rect, 0, 0, false);
+
+            Color32 color = _paintReadtexture.GetPixel(0, 0);
+            RenderTexture.active = null;
+            return color;
+        }
+
+        public bool IsOnColor(Vector2 uv, Color test, float comparisonEpsilon = float.Epsilon * 10e35f)
+        {
+            Color standingColor = GetColorAt(uv);
+            Color difference = standingColor * standingColor.a - test * test.a;
+            return (difference.r * difference.r + difference.g * difference.g + difference.b * difference.b) < comparisonEpsilon;
         }
 
         [Serializable]

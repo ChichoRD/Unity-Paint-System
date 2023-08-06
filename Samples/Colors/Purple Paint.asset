@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb656b0a94d34145882f5e621482dcd, type: 3}
   m_Name: Purple Paint
   m_EditorClassIdentifier: 
-  <BrushRadius>k__BackingField: 2
+  <BrushRadius>k__BackingField: 0.5
   <BrushHardness>k__BackingField: 0.5
   <BrushStrength>k__BackingField: 0.5
   <PaintColor>k__BackingField: {r: 0.6452765, g: 0.20121038, b: 0.6792453, a: 1}

@@ -35,22 +35,20 @@ Shader "Hidden/Paint Effect"
 			float3 normal : NORMAL;
         };
 		
-        TEXTURE2D(_MainTex);
-		SAMPLER(sampler_MainTex);
-		float4 _MainTex_TexelSize;
-        float4 _MainTex_ST;
-		
-		float3 _PainterPosition;
-		float _Radius;
-		float _Hardness;
-		float _Strength;
-		float4 _PainterColor;
+        uniform TEXTURE2D(_MainTex);
+		uniform SAMPLER(sampler_MainTex);
 
-		TEXTURE2D(_PaintTex);
-		SAMPLER(sampler_PaintTex);
-		float3 _PaintTexRotation;
-		float2 _PaintTexScale;
-		float2 _PaintTexOffset;
+		uniform float3 _PainterPosition;
+		uniform float _Radius;
+		uniform float _Hardness;
+		uniform float _Strength;
+		uniform float4 _PainterColor;
+
+		uniform TEXTURE2D(_PaintTex);
+		uniform SAMPLER(sampler_PaintTex);
+		uniform float3 _PaintTexRotation;
+		uniform float2 _PaintTexScale;
+		uniform float2 _PaintTexOffset;
 		
 		v2f vert(appdata v)
 		{
@@ -68,16 +66,35 @@ Shader "Hidden/Paint Effect"
 			return o;
         }
 
-		float taxicarDistance(float3 a, float3 b)
+		float SDSphere(float3 p, float3 centre, float radius)
 		{
-			return abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z);
+			return distance(p, centre) - radius;
+		}
+		
+		float SDBox(float3 p, float3 centre, float3 extents)
+		{
+			float3 d = abs(p - centre) - extents;
+			return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
 		}
 
-		float Mask(float3 position, float3 center, float radius, float hardness)
+		float DrawSDFAntialiasedContour(float d)
 		{
-			float m = distance(position, center);
-			//m = taxicarDistance(position, center);
-			return 1 - smoothstep(radius * hardness, radius, m);
+			const float thickness = 0.1;
+			const float smoothness = 0.01;
+			
+			return smoothstep(1.0f - thickness - smoothness,
+							  1.0f - thickness + smoothness,
+							  d);
+		}
+
+		float ApplyHardness(float d, float hardness, float radius)
+		{
+			return smoothstep(radius * hardness, radius, d);
+		}
+
+		float ApplyStrength(float d, float strength)
+		{
+			return (1.0f - d) * strength;
 		}
 
 		void RotateRadiansFloat(float2 UV, float2 Center, float Rotation, out float2 Out)
@@ -108,8 +125,11 @@ Shader "Hidden/Paint Effect"
 			{
 				float4 t = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 				
-				float m = Mask(i.worldPosition.xyz, _PainterPosition, _Radius, _Hardness);
-				float edge = m * _Strength;
+				float edge = ApplyStrength(
+								 ApplyHardness(
+									 SDSphere(i.worldPosition.xyz, _PainterPosition, _Radius),
+									 _Hardness, _Radius),
+								 _Strength);
 				
 				#if ALPHA_TO_RED
 				return lerp(t, _PainterColor, edge);
@@ -162,9 +182,11 @@ Shader "Hidden/Paint Effect"
 				float4 t = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 				float4 p = paint0 + paint1 + paint2;
 
-				float m = Mask(i.worldPosition.xyz, _PainterPosition, _Radius, _Hardness);
-				float edge = m * _Strength;
-				
+				float edge = ApplyStrength(
+								 ApplyHardness(
+									 SDBox(i.worldPosition.xyz, _PainterPosition, _Radius * 2.0f),
+									 _Hardness, _Radius),
+								 _Strength);				
 				#if ALPHA_TO_RED
 				return lerp(t, _PainterColor, edge * p.aaaa);
 				#else

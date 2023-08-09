@@ -8,6 +8,7 @@ namespace PaintSystem
     {
         [field: SerializeField] public Renderer Renderer { get; private set; }
         [SerializeField] private ShadowResolution _paintTextureResolution = ShadowResolution._256;
+        [SerializeField] private PaintRequesterObject _paintManagerObject;
         private Texture2D _paintReadTexture;
 
         public RenderTexture ColorMaskRT { get; private set; }
@@ -39,6 +40,8 @@ namespace PaintSystem
 
             Renderer.material.SetTexture(s_colorMaskTextureID, ColorMaskRT);
             Renderer.material.SetTexture(s_metallicSmoothnessMaskTextureID, MetallicSmoothnessMaskRT);
+
+            _paintManagerObject.InitializePaintable(this);
         }
 
         private void OnDisable()

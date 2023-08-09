@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "GUID:15fc0a57446b3144c949da3e2b9737a9",
-        "GUID:df380645f10b7bc4b97d4f5eb6303d95"
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:9c424c5baf190bc44b4c5623793371cd"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,7 +12,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "REQUIRE_INTERFACE_ATTRIBUTE"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

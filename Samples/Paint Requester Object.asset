@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d323f44e3def4f442a666ea29267b2e6, type: 3}
-  m_Name: Sample Paint Manager Object
+  m_Script: {fileID: 11500000, guid: a6274df6edd5eb14ea3bfda0b8c8d4e3, type: 3}
+  m_Name: Paint Requester Object
   m_EditorClassIdentifier: 

@@ -7,7 +7,9 @@ public class ContactPainter : LayerPainter
     private const int DEFAULT_MAX_CONTACTS = 5;
     private const int AUGMENTED_MAX_CONTACTS = 10;
 
-    [SerializeField] private PaintSettingsCollectionObject _paintSettingsCollectionObject;
+    [RequireInterface(typeof(IPaintBrushProvider), typeof(ScriptableObject))]
+    [SerializeField] private Object _paintBrushProviderObject;
+    private IPaintBrushProvider PaintbrushProvider => _paintBrushProviderObject as IPaintBrushProvider; 
 
     private void OnCollisionStay(Collision collision)
     {
@@ -16,10 +18,6 @@ public class ContactPainter : LayerPainter
         Paintable paintable = collision.gameObject.GetComponentInChildren<Paintable>();
         if (paintable == null) return;
 
-        //Vector3 contact = collision.contacts[0].point;
-        //paintManagerObject.Paint(paintable, contact, _paintSettingsCollectionObject);
-
-        //TODO - Introduce tiny cooldown to prevent multiple paint calls per frame
         const int MAX_CONTACTS = REDUCED_MAX_CONTACTS;
         var contacts = new ContactPoint[MAX_CONTACTS];
         var count = collision.GetContacts(contacts);
@@ -27,7 +25,7 @@ public class ContactPainter : LayerPainter
         for (var i = 0; i < count; i++)
         {
             var contact = contacts[i];
-            paintManagerObject.Paint(paintable, contact.point, _paintSettingsCollectionObject);
+            paintManagerObject.Paint(paintable, contact.point, PaintbrushProvider);
         }
     }
 }

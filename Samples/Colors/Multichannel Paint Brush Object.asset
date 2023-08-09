@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c952240969ade458964f3bd738407a, type: 3}
+  m_Name: Multichannel Paint Brush Object
+  m_EditorClassIdentifier: 
+  <PaintBrushes>k__BackingField:
+  - rid: 4411147410609274888
+  - rid: 4411147410609274890
+  references:
+    version: 2
+    RefIds:
+    - rid: 4411147410609274888
+      type: {class: TexturedPaintBrushData, ns: PaintSystem, asm: PaintSystem}
+      data:
+        <PaintBrushData>k__BackingField:
+          rid: 4411147410609274889
+        <PaintTexture>k__BackingField: {fileID: 2800000, guid: db80ee5d352c3014c85fca9f808d539c,
+          type: 3}
+        <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
+        <PaintTextureScale>k__BackingField: {x: 0.16666667, y: 0.16666667}
+        <PaintTextureOffset>k__BackingField: {x: 0.5, y: 0.5}
+    - rid: 4411147410609274889
+      type: {class: PaintBrushData, ns: PaintSystem, asm: PaintSystem}
+      data:
+        <BrushRadius>k__BackingField: 1
+        <BrushHardness>k__BackingField: 0
+        <BrushStrength>k__BackingField: 0.5
+        <PaintColor>k__BackingField: {r: 0.34582543, g: 0.16945527, b: 0.8018868,
+          a: 1}
+    - rid: 4411147410609274890
+      type: {class: TexturedPaintBrushData, ns: PaintSystem, asm: PaintSystem}
+      data:
+        <PaintBrushData>k__BackingField:
+          rid: 4411147410609274891
+        <PaintTexture>k__BackingField: {fileID: 2800000, guid: db80ee5d352c3014c85fca9f808d539c,
+          type: 3}
+        <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
+        <PaintTextureScale>k__BackingField: {x: 0.16666666, y: 0.16666666}
+        <PaintTextureOffset>k__BackingField: {x: 0.5, y: 0.5}
+    - rid: 4411147410609274891
+      type: {class: PBRPaintBrushData, ns: PaintSystem, asm: PaintSystem}
+      data:
+        <PaintBrushData>k__BackingField:
+          <BrushRadius>k__BackingField: 1
+          <BrushHardness>k__BackingField: 0
+          <BrushStrength>k__BackingField: 0.5
+          <PaintColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+        <PaintMetallic>k__BackingField: 0.5
+        <PaintSmoothness>k__BackingField: 0.75

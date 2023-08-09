@@ -3,7 +3,7 @@ using PaintSystem;
 
 public class CursorPainter : LayerPainter
 {
-    [SerializeField] private PaintSettingsCollectionObject _paintSettingsCollectionObject;
+    [SerializeField] private PaintBrushCollectionObject _paintSettingsCollectionObject;
     [field: SerializeField] public Camera Camera { get; set; }
 
     public bool TryPaintAtScreenPosition(Vector2 position, out Paintable paintable)

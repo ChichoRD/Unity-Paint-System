@@ -1,8 +1,8 @@
-Shader "Hidden/Paint Effect"
+Shader "Hidden/Paint Composite"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MaskTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
@@ -35,8 +35,8 @@ Shader "Hidden/Paint Effect"
 			float3 normal : NORMAL;
         };
 		
-        uniform TEXTURE2D(_MainTex);
-		uniform SAMPLER(sampler_MainTex);
+        uniform TEXTURE2D(_MaskTex);
+		uniform SAMPLER(sampler_MaskTex);
 
 		uniform float3 _PainterPosition;
 		uniform float _Radius;
@@ -123,7 +123,7 @@ Shader "Hidden/Paint Effect"
 			
 			float4 frag(v2f i) : SV_Target
 			{
-				float4 t = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+				float4 t = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 				
 				float edge = ApplyStrength(
 								 ApplyHardness(
@@ -179,7 +179,7 @@ Shader "Hidden/Paint Effect"
                 float4 paint1 = SAMPLE_TEXTURE2D(_PaintTex, sampler_PaintTex, uv_side) * weights.x;
                 float4 paint2 = SAMPLE_TEXTURE2D(_PaintTex, sampler_PaintTex, uv_top) * weights.y;
 
-				float4 t = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+				float4 t = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 				float4 p = paint0 + paint1 + paint2;
 
 				float edge = ApplyStrength(

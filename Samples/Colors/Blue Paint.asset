@@ -17,9 +17,9 @@ MonoBehaviour:
   <BrushStrength>k__BackingField: 0.5
   <PaintColor>k__BackingField: {r: 0.04955495, g: 0.22035761, b: 0.8207547, a: 1}
   <PaintMetallic>k__BackingField: 0.5
-  <PaintSmoothness>k__BackingField: 1
+  <PaintSmoothness>k__BackingField: 0.5
   <PaintTexture>k__BackingField: {fileID: 2800000, guid: db80ee5d352c3014c85fca9f808d539c,
     type: 3}
   <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  <PaintTextureScale>k__BackingField: {x: 0.5, y: 0.5}
-  <PaintTextureOffset>k__BackingField: {x: -0.75, y: -0.75}
+  <PaintTextureScale>k__BackingField: {x: 0.14285715, y: 0.14285715}
+  <PaintTextureOffset>k__BackingField: {x: -0.5, y: -0.5}

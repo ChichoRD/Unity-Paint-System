@@ -23,11 +23,11 @@ MonoBehaviour:
       data:
         <PaintBrushData>k__BackingField:
           rid: 4411147410609274889
-        <PaintTexture>k__BackingField: {fileID: 2800000, guid: db80ee5d352c3014c85fca9f808d539c,
+        <PaintTexture>k__BackingField: {fileID: 2800000, guid: 06fa5a82c5632174e930de557c9aa1f0,
           type: 3}
         <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
-        <PaintTextureScale>k__BackingField: {x: 0.16666667, y: 0.16666667}
-        <PaintTextureOffset>k__BackingField: {x: 0.5, y: 0.5}
+        <PaintTextureTiling>k__BackingField: {x: 1.2, y: 1.2}
+        <PaintTextureOffset>k__BackingField: {x: 0, y: 0}
     - rid: 4411147410609274889
       type: {class: PaintBrushData, ns: PaintSystem, asm: PaintSystem}
       data:
@@ -41,11 +41,11 @@ MonoBehaviour:
       data:
         <PaintBrushData>k__BackingField:
           rid: 4411147410609274891
-        <PaintTexture>k__BackingField: {fileID: 2800000, guid: db80ee5d352c3014c85fca9f808d539c,
+        <PaintTexture>k__BackingField: {fileID: 2800000, guid: 06fa5a82c5632174e930de557c9aa1f0,
           type: 3}
         <PaintTextureRotation>k__BackingField: {x: 0, y: 0, z: 0}
-        <PaintTextureScale>k__BackingField: {x: 0.16666666, y: 0.16666666}
-        <PaintTextureOffset>k__BackingField: {x: 0.5, y: 0.5}
+        <PaintTextureTiling>k__BackingField: {x: 1.2, y: 1.2}
+        <PaintTextureOffset>k__BackingField: {x: 0, y: 0}
     - rid: 4411147410609274891
       type: {class: PBRPaintBrushData, ns: PaintSystem, asm: PaintSystem}
       data:

@@ -14,10 +14,6 @@ Shader "Hidden/Paint Composite"
 
 		HLSLINCLUDE
 		
-		#pragma vertex vert
-        #pragma fragment frag
-		#pragma multi_compile_local_fragment _ ALPHA_TO_RED
-
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
         struct appdata
@@ -47,7 +43,7 @@ Shader "Hidden/Paint Composite"
 		uniform TEXTURE2D(_PaintTex);
 		uniform SAMPLER(sampler_PaintTex);
 		uniform float3 _PaintTexRotation;
-		uniform float2 _PaintTexScale;
+		uniform float2 _PaintTexTiling;
 		uniform float2 _PaintTexOffset;
 		
 		v2f vert(appdata v)
@@ -71,10 +67,10 @@ Shader "Hidden/Paint Composite"
 			return distance(p, centre) - radius;
 		}
 		
-		float SDBox(float3 p, float3 centre, float3 extents)
+		float SDBox(float3 p, float3 centre, float3 halfExtents)
 		{
-			float3 d = abs(p - centre) - extents;
-			return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
+			float3 d = abs(p - centre) - halfExtents;
+			return min(max(d.x, max(d.y, d.z)), 0.0f) + length(max(d, 0.0f));
 		}
 
 		float DrawSDFAntialiasedContour(float d)
@@ -120,10 +116,13 @@ Shader "Hidden/Paint Composite"
 			Blend SrcAlpha OneMinusSrcAlpha
 			
 			HLSLPROGRAM
+
+			#pragma vertex vert
+			#pragma fragment frag
 			
 			float4 frag(v2f i) : SV_Target
 			{
-				float4 t = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
+				float4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 				
 				float edge = ApplyStrength(
 								 ApplyHardness(
@@ -131,11 +130,7 @@ Shader "Hidden/Paint Composite"
 									 _Hardness, _Radius),
 								 _Strength);
 				
-				#if ALPHA_TO_RED
-				return lerp(t, _PainterColor, edge);
-				#else
-				return lerp(t, _PainterColor, edge);
-				#endif
+				return lerp(mask, _PainterColor, edge);
 			}
 			
 			ENDHLSL
@@ -148,11 +143,14 @@ Shader "Hidden/Paint Composite"
 			Blend SrcAlpha OneMinusSrcAlpha
 			
 			HLSLPROGRAM
-			
+
+			#pragma vertex vert
+			#pragma fragment frag
+
 			float4 frag(v2f i) : SV_Target
 			{
 				#define FOUR_OVER_PI 1.27323954474
-				float size = FOUR_OVER_PI / _Radius;
+				//float size = FOUR_OVER_PI / _Radius;
 
 				float2 dxy = _PainterPosition.xy;
 				float2 dyz = _PainterPosition.yz;
@@ -162,13 +160,13 @@ Shader "Hidden/Paint Composite"
 				float2 uv_side = i.worldPosition.yz - dyz;
 				float2 uv_top = i.worldPosition.xz - dxz;
 
-				RotateRadiansFloat(uv_front, 0.0, _PaintTexRotation.z, uv_front);
-				RotateRadiansFloat(uv_side, 0.0, _PaintTexRotation.x, uv_side);
-				RotateRadiansFloat(uv_top, 0.0, _PaintTexRotation.y, uv_top);
+				RotateRadiansFloat(uv_front, 0.0f, _PaintTexRotation.z, uv_front);
+				RotateRadiansFloat(uv_side, 0.0f, _PaintTexRotation.x, uv_side);
+				RotateRadiansFloat(uv_top, 0.0f, _PaintTexRotation.y, uv_top);
 
-				uv_front = (uv_front * size + 0.5) * _PaintTexScale + _PaintTexOffset;
-				uv_side = (uv_side * size + 0.5) * _PaintTexScale + _PaintTexOffset;
-				uv_top = (uv_top * size + 0.5) * _PaintTexScale + _PaintTexOffset;
+				uv_front	= ((uv_front	/ _Radius * 0.5f * _PaintTexTiling) * 0.5f + 0.5f + _PaintTexOffset);
+				uv_side		= ((uv_side		/ _Radius * 0.5f * _PaintTexTiling) * 0.5f + 0.5f + _PaintTexOffset);
+				uv_top		= ((uv_top		/ _Radius * 0.5f * _PaintTexTiling) * 0.5f + 0.5f + _PaintTexOffset);
 
 				float3 weights = abs(i.normal);
 				float3 signs = sign(weights);
@@ -179,19 +177,16 @@ Shader "Hidden/Paint Composite"
                 float4 paint1 = SAMPLE_TEXTURE2D(_PaintTex, sampler_PaintTex, uv_side) * weights.x;
                 float4 paint2 = SAMPLE_TEXTURE2D(_PaintTex, sampler_PaintTex, uv_top) * weights.y;
 
-				float4 t = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
+				float4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 				float4 p = paint0 + paint1 + paint2;
 
 				float edge = ApplyStrength(
 								 ApplyHardness(
-									 SDBox(i.worldPosition.xyz, _PainterPosition, _Radius * 2.0f),
+									 SDBox(i.worldPosition.xyz, _PainterPosition, _Radius),
 									 _Hardness, _Radius),
-								 _Strength);				
-				#if ALPHA_TO_RED
-				return lerp(t, _PainterColor, edge * p.aaaa);
-				#else
-				return lerp(t, _PainterColor, edge * p);
-				#endif
+								 _Strength);
+								 
+				return lerp(mask, _PainterColor, edge * p);
 			}
 			
 			ENDHLSL

@@ -24,7 +24,7 @@ namespace PaintSystem
 
         private static readonly int s_paintTextureID = Shader.PropertyToID("_PaintTex");
         private static readonly int s_paintTextureRotationID = Shader.PropertyToID("_PaintTexRotation");
-        private static readonly int s_paintTextureScaleID = Shader.PropertyToID("_PaintTexScale");
+        private static readonly int s_paintTextureTilingID = Shader.PropertyToID("_PaintTexTiling");
         private static readonly int s_paintTextureOffsetID = Shader.PropertyToID("_PaintTexOffset");
 
 
@@ -79,7 +79,7 @@ namespace PaintSystem
             {
                 _paintMaterial.SetTexture(s_paintTextureID, texturedPaintBrush.PaintTexture);
                 _paintMaterial.SetVector(s_paintTextureRotationID, texturedPaintBrush.PaintTextureRotation);
-                _paintMaterial.SetVector(s_paintTextureScaleID, texturedPaintBrush.PaintTextureScale);
+                _paintMaterial.SetVector(s_paintTextureTilingID, texturedPaintBrush.PaintTextureTiling);
                 _paintMaterial.SetVector(s_paintTextureOffsetID, texturedPaintBrush.PaintTextureOffset);
             }
 

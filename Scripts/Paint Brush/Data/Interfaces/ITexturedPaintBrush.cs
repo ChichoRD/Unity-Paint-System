@@ -6,7 +6,7 @@ namespace PaintSystem
     {
         Texture2D PaintTexture { get; }
         Vector3 PaintTextureRotation { get; }
-        Vector2 PaintTextureScale { get; }
+        Vector2 PaintTextureTiling { get; }
         Vector2 PaintTextureOffset { get; }
     }
 }

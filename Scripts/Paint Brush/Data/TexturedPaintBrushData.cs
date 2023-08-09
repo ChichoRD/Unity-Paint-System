@@ -15,14 +15,14 @@ namespace PaintSystem
         {
             PaintTexture = null,
             PaintTextureRotation = Vector3.zero,
-            PaintTextureScale = Vector2.one,
+            PaintTextureTiling = Vector2.one,
             PaintTextureOffset = Vector2.zero
         };
 
         [field: SerializeReference] public IPaintBrush PaintBrushData { get; set; }
         [field: SerializeField] public Texture2D PaintTexture { get; set; }
         [field: SerializeField] public Vector3 PaintTextureRotation { get; set; }
-        [field: SerializeField] public Vector2 PaintTextureScale { get; set; }
+        [field: SerializeField] public Vector2 PaintTextureTiling { get; set; }
         [field: SerializeField] public Vector2 PaintTextureOffset { get; set; }
 
         public readonly float BrushRadius => PaintBrushData.BrushRadius;

@@ -1,6 +1,9 @@
 using PaintSystem;
+using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
+[Obsolete]
 public class ContactPainter : LayerPainter
 {
     private const int REDUCED_MAX_CONTACTS = 1;

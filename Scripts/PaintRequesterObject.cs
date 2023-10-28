@@ -27,7 +27,6 @@ namespace PaintSystem
         private static readonly int s_paintTextureTilingID = Shader.PropertyToID("_PaintTexTiling");
         private static readonly int s_paintTextureOffsetID = Shader.PropertyToID("_PaintTexOffset");
 
-
         public void Initialize()
         {
             if (Initialized) return;

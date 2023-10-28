@@ -149,9 +149,6 @@ Shader "Hidden/Paint Composite"
 
 			float4 frag(v2f i) : SV_Target
 			{
-				#define FOUR_OVER_PI 1.27323954474
-				//float size = FOUR_OVER_PI / _Radius;
-
 				float2 dxy = _PainterPosition.xy;
 				float2 dyz = _PainterPosition.yz;
 				float2 dxz = _PainterPosition.xz;
@@ -191,6 +188,5 @@ Shader "Hidden/Paint Composite"
 			
 			ENDHLSL
         }
-
     }
 }

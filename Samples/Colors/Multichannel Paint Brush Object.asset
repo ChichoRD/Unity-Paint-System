@@ -31,10 +31,10 @@ MonoBehaviour:
     - rid: 4411147410609274889
       type: {class: PaintBrushData, ns: PaintSystem, asm: PaintSystem}
       data:
-        <BrushRadius>k__BackingField: 1
+        <BrushRadius>k__BackingField: 0.01
         <BrushHardness>k__BackingField: 0
         <BrushStrength>k__BackingField: 0.5
-        <PaintColor>k__BackingField: {r: 0.34582543, g: 0.16945527, b: 0.8018868,
+        <PaintColor>k__BackingField: {r: 0.3301887, g: 0.093430884, b: 0.038625833,
           a: 1}
     - rid: 4411147410609274890
       type: {class: TexturedPaintBrushData, ns: PaintSystem, asm: PaintSystem}
@@ -50,9 +50,9 @@ MonoBehaviour:
       type: {class: PBRPaintBrushData, ns: PaintSystem, asm: PaintSystem}
       data:
         <PaintBrushData>k__BackingField:
-          <BrushRadius>k__BackingField: 1
+          <BrushRadius>k__BackingField: 0.01
           <BrushHardness>k__BackingField: 0
           <BrushStrength>k__BackingField: 0.5
           <PaintColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
-        <PaintMetallic>k__BackingField: 0.5
-        <PaintSmoothness>k__BackingField: 0.75
+        <PaintMetallic>k__BackingField: 0
+        <PaintSmoothness>k__BackingField: 0.094

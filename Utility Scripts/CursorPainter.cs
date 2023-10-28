@@ -1,10 +1,21 @@
 using UnityEngine;
 using PaintSystem;
+using System;
+using Object = UnityEngine.Object;
 
-public class CursorPainter : LayerPainter
+[Obsolete]
+public class CursorPainter : LayerPainter // TODO - Improve these sample scripts
 {
-    [SerializeField] private PaintBrushCollectionObject _paintSettingsCollectionObject;
+    [RequireInterface(typeof(IPaintBrushProvider))]
+    [SerializeField] private Object _paintSettingsCollectionObject;
+    private IPaintBrushProvider PaintBrushProvider => _paintSettingsCollectionObject as IPaintBrushProvider;
     [field: SerializeField] public Camera Camera { get; set; }
+
+    [Obsolete]
+    private void Update()
+    {
+        TryPaintAtScreenPosition(Camera.ViewportToScreenPoint(Vector3.one * 0.5f), out _);
+    }
 
     public bool TryPaintAtScreenPosition(Vector2 position, out Paintable paintable)
     {
@@ -17,7 +28,7 @@ public class CursorPainter : LayerPainter
         paintable = hit.collider.transform.root.gameObject.GetComponentInChildren<Paintable>();
         if (paintable == null) return false;
         
-        paintManagerObject.Paint(paintable, hit.point, _paintSettingsCollectionObject);
+        paintManagerObject.Paint(paintable, hit.point, PaintBrushProvider);
         return true;
     }
 }
